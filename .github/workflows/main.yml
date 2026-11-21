@@ -1,7 +1,7 @@
 name: Poweron Monitor
 on:
   schedule:
-    - cron: '*/10 * * * *'   # Автозапуск кожні 10 хвилин
+    - cron: '3,13,23,33,43,53 * * * *'   # Автозапуск кожні 10 хвилин
   workflow_dispatch:         # Можливість ручного запуску
 permissions:
   contents: write            # Дозвіл на збереження state.json
