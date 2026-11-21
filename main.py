@@ -39,16 +39,28 @@ TEXT = {"0": "є світло", "1": "немає світла", "10": "можл�
 
 
 def tg_send(text):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    data = {"chat_id": CHAT, "text": text[:4000]}
-    r = requests.post(url, data=data, timeout=30)
+    chat_ids = [chat.strip() for chat in CHAT.split(",") if chat.strip()]
     
-    # Якщо статус не 200 OK, друкуємо детальну відповідь від Telegram
-    if r.status_code != 200:
-        print(f"❌ ПОМИЛКА TELEGRAM API: {r.status_code}")
-        print(f"Відповідь сервера: {r.text}")
+    if not chat_ids:
+        print("❌ ПОМИЛКА: Не вказано жодного TG_CHAT у секретах GitHub.")
+        return
+
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    all_success = True
+    
+    for chat_id in chat_ids:
+        data = {"chat_id": chat_id, "text": text[:4000]}
+        r = requests.post(url, data=data, timeout=30)
         
-    r.raise_for_status()
+        if r.status_code == 200:
+            print(f"✅ Повідомлення успішно надіслано в чат: {chat_id}")
+        else:
+            print(f"❌ ПОМИЛКА TELEGRAM API для чату {chat_id}: {r.status_code}")
+            print(f"Відповідь сервера: {r.text}")
+            all_success = False
+            
+    if not all_success:
+        print("⚠️ Увага: Не вдалося надіслати повідомлення одному або кільком отримувачам.")
 
 
 def fetch():
