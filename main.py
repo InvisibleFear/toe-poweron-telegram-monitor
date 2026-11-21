@@ -39,8 +39,15 @@ TEXT = {"0": "є світло", "1": "немає світла", "10": "можл�
 
 
 def tg_send(text):
-    r = requests.post(f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-                      data={"chat_id": CHAT, "text": text[:4000]}, timeout=30)
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = {"chat_id": CHAT, "text": text[:4000]}
+    r = requests.post(url, data=data, timeout=30)
+    
+    # Якщо статус не 200 OK, друкуємо детальну відповідь від Telegram
+    if r.status_code != 200:
+        print(f"❌ ПОМИЛКА TELEGRAM API: {r.status_code}")
+        print(f"Відповідь сервера: {r.text}")
+        
     r.raise_for_status()
 
 
