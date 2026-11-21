@@ -1,24 +1,30 @@
 name: Poweron Monitor
 on:
   schedule:
-    - cron: '*/10 * * * *'
-  workflow_dispatch:         # Run workflow
+    - cron: '*/10 * * * *'   # Автозапуск кожні 10 хвилин
+  workflow_dispatch:         # Можливість ручного запуску
 permissions:
-  contents: write            # state.json
+  contents: write            # Дозвіл на збереження state.json
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install requests tzdata
+          
+      - name: Install dependencies
+        run: pip install requests tzdata
+        
       - name: Run monitor
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT:  ${{ secrets.TG_CHAT }}
+          TG_ADDRESS: ${{ secrets.TG_ADDRESS }}   # <-- ДОДАНО ЦЕЙ РЯДОК
         run: python main.py
+        
       - name: Save state
         run: |
           git config user.name  "github-actions[bot]"
