@@ -10,13 +10,13 @@ except Exception:
 
 # ---------- НАЛАШТУВАННЯ ----------
 TOKEN = os.environ.get("TG_TOKEN") or ""
-CHAT  = os.environ.get("TG_CHAT")  or ""   # add secret
+CHAT  = os.environ.get("TG_CHAT")  or ""
+ADDRESS_LABEL = os.environ.get("ADDRESS") or ""
 API   = "https://api-poweron.toe.com.ua/api/a_gpv_g"
 GROUP = "5.2"
 ADDR_KEY  = "2203940014130"
 DEBUG_KEY = "MjIwMzkvNDAwMTQvMTMw"
 DAYS_AHEAD = 1
-ADDRESS_LABEL = "selo, vylesha, number"
 # -----------------------------------
 
 BASE  = os.path.dirname(os.path.abspath(__file__))
